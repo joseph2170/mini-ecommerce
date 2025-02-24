@@ -1,7 +1,7 @@
 import {useState, useEffect} from 'react';
 import { useParams } from 'react-router-dom';
 import {toast} from 'react-toastify';
-import { Link } from "react-router-dom";
+
 export default function ProductDetail({cartItems, setCartItems,Header}) {
     const [product, setProduct] = useState(null);
     const [qty, setQty] = useState(1);
@@ -11,10 +11,10 @@ export default function ProductDetail({cartItems, setCartItems,Header}) {
         fetch(process.env.REACT_APP_API_URL+'/product/'+id)
         .then(res => res.json())
         .then( res => setProduct(res.product))
-    },[])
+    },[id])
 
     function addToCart() {
-        const itemExist = cartItems.find((item) => item.product._id == product._id)
+        const itemExist = cartItems.find((item) => item.product._id === product._id)
         if (!itemExist) {
             const newItem = {product, qty};
             setCartItems((state) => [...state, newItem]);
@@ -23,7 +23,7 @@ export default function ProductDetail({cartItems, setCartItems,Header}) {
     }
 
     function increaseQty() {
-        if (product.stock == qty) {
+        if (product.stock === qty) {
             return;
         }
         setQty((state) => state + 1);
@@ -63,7 +63,7 @@ export default function ProductDetail({cartItems, setCartItems,Header}) {
 
                             <span className="btn btn-primary plus" onClick={increaseQty}>+</span>
                         </div>
-                        <button type="button" onClick={addToCart} disabled={product.stock == 0}   id="cart_btn" className="btn btn-primary d-inline ml-4">Add to Cart</button>
+                        <button type="button" onClick={addToCart} disabled={product.stock === 0}   id="cart_btn" className="btn btn-primary d-inline ml-4">Add to Cart</button>
 
                         <hr />
 
